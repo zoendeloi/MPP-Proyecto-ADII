@@ -1,0 +1,5 @@
+"0","Cursos <- Cursos %>%"
+"0","  select(CodAlumno, Periodo, SiglaCurso, NotaFinal) %>%"
+"0","  group_by(CodAlumno, SiglaCurso) %>%"
+"0","  slice_min(Periodo, with_ties = FALSE) %>%"
+"0","  ungroup()"

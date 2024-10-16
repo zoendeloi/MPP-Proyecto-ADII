@@ -41,7 +41,8 @@ db <- read_csv("dbprojmpp.csv") %>%
             Nombre,
             NroAlumno,
             Rut))
-Cursos <- read_csv("Cursos.csv")
+Cursos <- read_csv("Cursos.csv") %>%
+  mutate(NotaFinal = as.double(NotaFinal))
 ```
 
 ## Exploración de datos
@@ -67,4 +68,23 @@ db <- db %>%
     TRUE ~ PAES
   ))
 
+```
+
+```{r}
+summary(db %>% select(CLEC, MTM1, MTM2, CIEN, PuntajeNem))
+```
+
+```{r}
+Cursos <- Cursos %>%
+  select(CodAlumno, Periodo, SiglaCurso, NotaFinal) %>%
+  group_by(CodAlumno, SiglaCurso) %>%
+  slice_min(Periodo, with_ties = FALSE) %>%
+  ungroup()
+```
+
+```{r}
+summary(Cursos %>% pivot_wider(names_from = SiglaCurso,
+                               values_from = NotaFinal,
+                               values_fill = NA) %>%
+          select(-CodAlumno, -Periodo))
 ```
